@@ -7,9 +7,9 @@
     
     <arg name="queue_size" default="5" />
     <arg name="camera_namespace" default="/head_xtion" />
-    <arg name="depth_image" default="/depth/image_rect_meters" />
-    <arg name="rgb_image" default="/rgb/image_rect_color" />
-    <arg name="camera_info_depth" default="/depth/camera_info" />
+    <arg name="depth_image" default="/depth_registered/image_rect" />
+    <arg name="rgb_image" default="/rgb/image_rect" />
+    <arg name="camera_info_depth" default="/depth_registered/camera_info" />
     <arg name="upper_body_detections" default="/upper_body_detector/detections" />
     <arg name="upper_body_bb_centres" default="/upper_body_detector/bounding_box_centres" />
     <arg name="upper_body_image" default="/upper_body_detector/image" />

@@ -430,7 +430,7 @@ void Tracker::process_tracking_oneFrame(Vector<Hypo>& HyposAll, Detections& allD
 ////////////////////                                               STEREO                                                    ///////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Tracker::process_frame(Detections& det, Camera &cam, int t,  Vector< Hypo >& HyposAll)
+void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< Hypo >& HyposAll)
 {
 
 
@@ -450,7 +450,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int t,  Vector< Hypo >
     int bTerminated = 0;
     Matrix<double> Q;
     Vector<double> m;
-    Vector< Hypo > HypoNew;
+    Vector< Hypo > HyposNew;
     Vector< Hypo > HypoExtended;
 
 
@@ -460,7 +460,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int t,  Vector< Hypo >
     // Define frame range for finding new Hypos
     //*****************************************************************
 
-    int LTPmax = t;
+    int LTPmax = frameNr;
     int LTPmin = max(LTPmax-Globals::history, Globals::nOffset);
 
     //******************************************************************
@@ -481,18 +481,18 @@ void Tracker::process_frame(Detections& det, Camera &cam, int t,  Vector< Hypo >
     // Find new Hypos
     //******************************************************************
 
-    make_new_hypos(LTPmax, LTPmin, det, HypoNew, normfct, extendUsedDet);
+    make_new_hypos(LTPmax, LTPmin, det, HyposNew, normfct, extendUsedDet);
 //    if(Globals::verbose){
 //        cout<< "\33[31;40;1m" << "     Created " << HypoNew.getSize()
 //            << " new Trajectories " << "\33[0m"  << endl;
 //    }
-    ROS_DEBUG("\33[31;40;1m     Created %i new Trajectories \33[0m", HypoNew.getSize());
+    ROS_DEBUG("\33[31;40;1m     Created %i new Trajectories \33[0m", HyposNew.getSize());
 
     HyposAll.clearContent();
 //    HyposAll.append(HypoEnded);
     HyposAll.append(HypoExtended);
-    HyposAll.append(HypoNew);
-    HypoNew.clearContent();
+    HyposAll.append(HyposNew);
+    HyposNew.clearContent();
     HypoExtended.clearContent();
 
     //******************************************************************
@@ -647,7 +647,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int t,  Vector< Hypo >
     {
         if(!HyposMDL(i).isTerminated())
         {
-            HyposAll(HypoIdx(i)).setLastSelected(t);
+            HyposAll(HypoIdx(i)).setLastSelected(frameNr);
             HyposAll(HypoIdx(i)).setHypoID(HyposMDL(i).getHypoID());
             HyposAll(HypoIdx(i)).setParentID(HyposMDL(i).getParentID());
         }
@@ -663,7 +663,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int t,  Vector< Hypo >
     temp.clearContent();
     for(unsigned int i = 0; i < nr; i++)
     {
-        if(!HyposAll(i).isTerminated() && (t - HyposAll(i).getLastSelected()) < Globals::coneTimeHorizon)
+        if(!HyposAll(i).isTerminated() && (frameNr - HyposAll(i).getLastSelected()) < Globals::coneTimeHorizon)
         {
             temp.pushBack(HyposAll(i));
         }
@@ -1211,6 +1211,9 @@ void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hy
         Hypo hypo;
         hypo.setStateCovMats(stateCovMats);
         hypo.setColHists(colHists);
+        hypo.setUbdHeaderSeq(det.getHeaderSeq(endFrame,j));
+        hypo.setUbdHeaderSeq(123456);
+        hypo.setUbdIndex(det.getIndex(endFrame, j));
 
         compute_hypo_entries(mAllXnewDown, vRDown, vVDown, vvIdxDown, det, hypo, normfct, endFrame);
 

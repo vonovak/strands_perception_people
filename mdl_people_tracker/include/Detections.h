@@ -56,6 +56,12 @@ public:
     double getHeight( int frame,  int detec);
 //    void getDetection(int frame, int detec, Vector<double>& det);
     int getCategory(int frame, int detec);
+    int getHeaderSeq(int frame, int detec){
+    	return detC(frame)(detec)(24);
+    }
+    int getIndex(int frame, int detec){
+    	return detC(frame)(detec)(1);
+    }
 //    int getDetNumber(int frame, int detec);
 //    Vector<Vector<double> > get3Dpoints(int frame, int detec);
 //    Vector<Vector<int> > getOccCells(int frame, int detec);

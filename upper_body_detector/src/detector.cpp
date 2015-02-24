@@ -31,7 +31,7 @@ void Detector::ProcessFrame(const Camera &camera_origin, const Matrix<double> &d
 
 
     Vector<Vector<double> > close_range_BBoxes;
-    Vector<Vector<double > > distances;
+    Vector<Vector<double> > distances;
 
     Vector<double> lower_point(3);
 
@@ -70,7 +70,6 @@ void Detector::ProcessFrame(const Camera &camera_origin, const Matrix<double> &d
             }
         }
     }
-
 
 
     detected_bounding_boxes = EvaluateTemplate(upper_body_template, depth_map, close_range_BBoxes, distances);
@@ -241,7 +240,7 @@ Vector<Vector<double> >  Detector::EvaluateTemplate(const Matrix<double> &upper_
                                                         Vector<Vector<double> > distances)
 {
     int stride = Globals::evaluation_stride;
-    int nr_scales = Globals::evaluation_nr_scales;
+    int nr_scales = Globals::evaluation_nr_scales; //TODO suspicious
     int inc_cropped_height = Globals::evaluation_inc_cropped_height;
 
     // performance helper variables: just for avoiding recalculation
@@ -408,7 +407,7 @@ Vector<Vector<double> >  Detector::EvaluateTemplate(const Matrix<double> &upper_
 
                     for(int y=cy; y<=cy+1*stride; y+=stride)
                     {
-                        if(y>=extended_cropped.y_size() || y>=extended_cropped.y_size()) continue;
+                        if(y>=extended_cropped.y_size() || y>=extended_cropped.y_size()) continue; //TODO suspicious
                         int y_size = min(extended_cropped.y_size()-1, y+Globals::template_size) - y;
 
                         int start_row = (int)max(0.0, y + y_size/2.0-5);

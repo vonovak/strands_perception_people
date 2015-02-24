@@ -453,7 +453,7 @@ void callbackWithoutHOG(const ImageConstPtr &color,
     Camera camera = createCamera(GP, vo, info);
 
     // Get detections from upper body
-    Vector<double> single_detection(9);
+    Vector<double> single_detection(10);
     Vector<Vector< double > > detected_bounding_boxes;
 
     for(int i = 0; i < upper->pos_x.size(); i++)
@@ -467,6 +467,7 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         single_detection(6) = upper->width[i];
         single_detection(7) = upper->height[i] * 3;
         single_detection(8) = upper->median_depth[i];
+        single_detection(9) = upper->header.seq;
         detected_bounding_boxes.pushBack(single_detection);
     }
 
@@ -485,6 +486,8 @@ void callbackWithoutHOG(const ImageConstPtr &color,
     {
         MdlPeopleTracker oneHypoMsg;
         oneHypoMsg.header = upper->header;
+
+
         hyposMDL(i).getTrajPts(trajPts);
         for(int j = 0; j < trajPts.getSize(); j++)
         {
@@ -504,6 +507,8 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         oneHypoMsg.score = hyposMDL(i).getScoreMDL();
         oneHypoMsg.speed = hyposMDL(i).getSpeed();
         hyposMDL(i).getDir(dir);
+        oneHypoMsg.index = hyposMDL(i).getUbdIndex();
+        oneHypoMsg.seq = hyposMDL(i).getUbdHeaderSeq();
 
         oneHypoMsg.dir.push_back(dir(0));
         oneHypoMsg.dir.push_back(dir(1));

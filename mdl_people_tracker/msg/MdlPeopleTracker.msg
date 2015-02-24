@@ -12,3 +12,5 @@ float64 speed           # Speed of detected person
 int64 id                # Tracking id. Will be reset to 0 after restart
 string uuid             # Unique uuid5 (NAMESPACE_DNS) person id as string. Id is based on system time on start-up and id.
 float64 score           # Tracker confidence
+uint32 seq              # seq numbers from the headers of UBD messages / this should be an array
+uint8 index             # index to to get data from the UBD messages

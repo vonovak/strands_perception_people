@@ -147,6 +147,20 @@ public:
     void getStateCovMats(Vector<Matrix<double> >& covMats);
     void setStateCovMats(Vector<Matrix<double> >& covMats);
 
+    int getUbdHeaderSeq(){
+    	return ubd_header_seq;
+    }
+    void setUbdHeaderSeq(int seq){
+    	ubd_header_seq=seq;
+    }
+
+    int getUbdIndex(){
+        	return ubd_index;
+        }
+    void setUbdIndex(int index){
+    	ubd_index=index;
+    }
+
 //    void setWasApproved(bool v);
 //    bool getWasApproved();
 
@@ -216,6 +230,9 @@ protected:
 
     bool b_terminationFlag;
     int n_lastSelected;
+
+    int ubd_header_seq;
+    int ubd_index;
 
 //    bool was_not_approved;
 
