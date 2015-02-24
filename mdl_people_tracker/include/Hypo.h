@@ -149,13 +149,15 @@ public:
 
     int getUbdHeaderSeq(){
     	return ubd_header_seq;
+//return 1111;
     }
     void setUbdHeaderSeq(int seq){
-    	ubd_header_seq=-1111;
+    	ubd_header_seq=seq;
     }
 
     int getUbdIndex(){
-        	return -1;
+        return ubd_index;
+//return 2222;
         }
     void setUbdIndex(int index){
     	ubd_index=index;
