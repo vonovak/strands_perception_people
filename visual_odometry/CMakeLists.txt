@@ -4,7 +4,7 @@ project(visual_odometry)
 find_package(PkgConfig REQUIRED)
 find_package(catkin REQUIRED COMPONENTS 
     cv_bridge 
-    eigen
+    cmake_modules
     image_transport
     message_filters 
     message_generation 
