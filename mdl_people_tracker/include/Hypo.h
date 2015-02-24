@@ -151,11 +151,11 @@ public:
     	return ubd_header_seq;
     }
     void setUbdHeaderSeq(int seq){
-    	ubd_header_seq=seq;
+    	ubd_header_seq=-1111;
     }
 
     int getUbdIndex(){
-        	return ubd_index;
+        	return -1;
         }
     void setUbdIndex(int index){
     	ubd_index=index;
