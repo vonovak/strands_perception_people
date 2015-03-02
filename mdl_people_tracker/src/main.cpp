@@ -468,8 +468,8 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         single_detection(7) = upper->height[i] * 3;
         single_detection(8) = upper->median_depth[i];
         single_detection(9) = (double) upper->header.seq;
-        ROS_DEBUG_STREAM("seq number from UBD msg:"<<upper->header.seq);
-        ROS_DEBUG_STREAM("seq nr saved:"<<single_detection(9));
+        ROS_FATAL_STREAM("seq number from UBD msg:"<<upper->header.seq);
+        ROS_FATAL_STREAM("seq nr saved:"<<single_detection(9));
         detected_bounding_boxes.pushBack(single_detection);
     }
 
@@ -510,9 +510,9 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         oneHypoMsg.speed = hyposMDL(i).getSpeed();
         hyposMDL(i).getDir(dir);
         oneHypoMsg.index = hyposMDL(i).getUbdIndex();
-        ROS_DEBUG_STREAM("hypo msg index set to: "<<oneHypoMsg.index);
+        ROS_FATAL_STREAM("hypo msg index set to: "<<oneHypoMsg.index);
         oneHypoMsg.seq = hyposMDL(i).getUbdHeaderSeq();
-        ROS_DEBUG_STREAM("hypo msg seq.nr set to: "<<oneHypoMsg.seq);
+        ROS_FATAL_STREAM("hypo msg seq.nr set to: "<<oneHypoMsg.seq);
 
         oneHypoMsg.dir.push_back(dir(0));
         oneHypoMsg.dir.push_back(dir(1));
