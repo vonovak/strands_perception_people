@@ -152,7 +152,7 @@ public:
         //return 1111;
     }
     void setUbdHeaderSeq(uint32_t seq){
-    	cout<<"setting hypo seq.nr: "<<seq<<endl;
+    	ROS_DEBUG_STREAM("setting hypo seq.nr: "<<seq);
     	ubd_header_seq=seq;
     }
 
@@ -161,7 +161,7 @@ public:
         //return 2222;
     }
     void setUbdIndex(int index){
-    	cout<<"setting hypo index: "<<index<<endl;
+    	ROS_DEBUG_STREAM("setting hypo index: "<<index);
     	ubd_index=index;
     }
 
