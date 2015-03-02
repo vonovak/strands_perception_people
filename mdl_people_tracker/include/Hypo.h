@@ -155,11 +155,11 @@ public:
     	ubd_header_seq=seq;
     }
 
-    uint32_t getUbdIndex(){
+    int getUbdIndex(){
         return ubd_index;
 //return 2222;
         }
-    void setUbdIndex(uint32_t index){
+    void setUbdIndex(int index){
     	ubd_index=index;
     }
 
@@ -234,7 +234,7 @@ protected:
     int n_lastSelected;
 
     uint32_t ubd_header_seq;
-    uint32_t ubd_index;
+    int ubd_index;
 
 //    bool was_not_approved;
 

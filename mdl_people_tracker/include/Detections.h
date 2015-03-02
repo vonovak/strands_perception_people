@@ -59,8 +59,8 @@ public:
     uint32_t getHeaderSeq(int frame, int detec){
     	return static_cast<unsigned int>(detC(frame)(detec)(24));
     }
-    uint32_t getIndex(int frame, int detec){
-    	return static_cast<unsigned int>(detC(frame)(detec)(1));
+    int getIndex(int frame, int detec){
+    	return static_cast<int>(detC(frame)(detec)(1));
     }
 //    int getDetNumber(int frame, int detec);
 //    Vector<Vector<double> > get3Dpoints(int frame, int detec);
