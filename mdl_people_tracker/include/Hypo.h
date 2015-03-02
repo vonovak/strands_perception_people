@@ -149,17 +149,19 @@ public:
 
     uint32_t getUbdHeaderSeq(){
     	return ubd_header_seq;
-//return 1111;
+        //return 1111;
     }
     void setUbdHeaderSeq(uint32_t seq){
+    	cout<<"setting hypo seq.nr: "<<seq<<endl;
     	ubd_header_seq=seq;
     }
 
     int getUbdIndex(){
         return ubd_index;
-//return 2222;
-        }
+        //return 2222;
+    }
     void setUbdIndex(int index){
+    	cout<<"setting hypo index: "<<index<<endl;
     	ubd_index=index;
     }
 

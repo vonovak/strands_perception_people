@@ -468,6 +468,8 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         single_detection(7) = upper->height[i] * 3;
         single_detection(8) = upper->median_depth[i];
         single_detection(9) = (double) upper->header.seq;
+        cout<<"seq number from UBD msg:"<<upper->header.seq<<endl;
+        cout<<"seq nr saved:"<<single_detection(9)<<endl;
         detected_bounding_boxes.pushBack(single_detection);
     }
 
@@ -508,7 +510,9 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         oneHypoMsg.speed = hyposMDL(i).getSpeed();
         hyposMDL(i).getDir(dir);
         oneHypoMsg.index = hyposMDL(i).getUbdIndex();
+        cout<<"hypo msg index set to: "<<oneHypoMsg.index<<endl;
         oneHypoMsg.seq = hyposMDL(i).getUbdHeaderSeq();
+        cout<<"hypo msg seq.nr set to: "<<oneHypoMsg.seq<<endl;
 
         oneHypoMsg.dir.push_back(dir(0));
         oneHypoMsg.dir.push_back(dir(1));
