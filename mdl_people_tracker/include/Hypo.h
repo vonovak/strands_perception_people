@@ -152,7 +152,7 @@ public:
         //return 1111;
     }
     void setUbdHeaderSeq(uint32_t seq){
-    	ROS_FATAL_STREAM("setting hypo seq.nr: "<<seq);
+    	ROS_FATAL_STREAM("2) setting hypo seq.nr: "<<seq);
     	ubd_header_seq=seq;
     }
 
@@ -161,7 +161,7 @@ public:
         //return 2222;
     }
     void setUbdIndex(int index){
-    	ROS_FATAL_STREAM("setting hypo index: "<<index);
+    	ROS_FATAL_STREAM("2) setting hypo index: "<<index);
     	ubd_index=index;
     }
 

@@ -168,7 +168,7 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
     detContent.setSize(25, 0.0);
 
     // i is the index I want to save in the message
-    // det is a vector, that contains the detection messages. Detection message contains the seq # that I want at index 9
+    // det is a vector, that contains the detection messages. Detection message contains the seq # that I want, at index 9
 
     detContent(score) = det(i)(score_hog);
     detContent(scale) = det(i)(scale_hog) ;
@@ -186,6 +186,7 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
         detContent(22) = 1;
     }
     detContent(24) = det(i)(9);
+    ROS_FATAL_STREAM("?) seq number saved stored to detC:"<<detContent(24));
 
     Matrix<double> camRot = Eye<double>(3);
     Vector<double> camPos(3, 0.0);
