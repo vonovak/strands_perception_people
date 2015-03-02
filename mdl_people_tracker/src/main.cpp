@@ -467,7 +467,7 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         single_detection(6) = upper->width[i];
         single_detection(7) = upper->height[i] * 3;
         single_detection(8) = upper->median_depth[i];
-        single_detection(9) = upper->header.seq;
+        single_detection(9) = (double) upper->header.seq;
         detected_bounding_boxes.pushBack(single_detection);
     }
 
