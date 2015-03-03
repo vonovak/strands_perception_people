@@ -1115,8 +1115,8 @@ void Tracker::extend_trajectories(Vector< Hypo >& vHypos,  Detections& det, int 
         newHypo.setUbdHeaderSeq(det.getHeaderSeq(t,i));
         newHypo.setUbdIndex(det.getIndex(t, i));
 
-//        ROS_FATAL_STREAM("3) hypo setting index to: "<<det.getIndex(endFrame, j));
-//        ROS_FATAL_STREAM("3) hypo index set to: "<<hypo.getUbdIndex());
+        ROS_FATAL_STREAM("3.0) hypo seq nr set to: "<<newHypo.getUbdHeaderSeq());
+        ROS_FATAL_STREAM("3.0) hypo index set to: "<<newHypo.getUbdIndex());
 
         if (newHypo.getCategory() != -1)
         {
