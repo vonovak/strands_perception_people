@@ -1219,7 +1219,7 @@ void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hy
 
         hypo.setUbdHeaderSeq(det.getHeaderSeq(endFrame,j));
         hypo.setUbdIndex(det.getIndex(endFrame, j));
-        ROS_FATAL_STREAM("3) hypo setting index to: "<<det.getIndex(endFrame, j));
+        ROS_FATAL_STREAM("3) hypo seq nr set to: "<<hypo.getUbdHeaderSeq());
         ROS_FATAL_STREAM("3) hypo index set to: "<<hypo.getUbdIndex());
 
         compute_hypo_entries(mAllXnewDown, vRDown, vVDown, vvIdxDown, det, hypo, normfct, endFrame);
