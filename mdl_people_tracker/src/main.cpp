@@ -509,9 +509,9 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         oneHypoMsg.speed = hyposMDL(i).getSpeed();
         hyposMDL(i).getDir(dir);
         oneHypoMsg.index = hyposMDL(i).getUbdIndex();
-        ROS_FATAL_STREAM("3) hypo msg index set to: "<<oneHypoMsg.index);
+        ROS_FATAL_STREAM("*) hypo msg index set to: "<<oneHypoMsg.index);
         oneHypoMsg.seq = hyposMDL(i).getUbdHeaderSeq();
-        ROS_FATAL_STREAM("3) hypo msg seq.nr set to: "<<oneHypoMsg.seq);
+        ROS_FATAL_STREAM("*) hypo msg seq.nr set to: "<<oneHypoMsg.seq);
 
         oneHypoMsg.dir.push_back(dir(0));
         oneHypoMsg.dir.push_back(dir(1));
