@@ -56,7 +56,7 @@ public:
     double getHeight( int frame,  int detec);
 //    void getDetection(int frame, int detec, Vector<double>& det);
     int getCategory(int frame, int detec);
-    uint32_t getHeaderSeq(int frame, int detec){
+    uint32_t getSeqNr(int frame, int detec){
     	return static_cast<unsigned int>(detC(frame)(detec)(24));
     }
     int getIndex(int frame, int detec){

@@ -468,16 +468,19 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         single_detection(7) = upper->height[i] * 3;
         single_detection(8) = upper->median_depth[i];
         single_detection(9) = (double) upper->header.seq;
-        ROS_FATAL_STREAM("1) seq number saved from UBD msg:"<<upper->header.seq);
         detected_bounding_boxes.pushBack(single_detection);
     }
-
     get_image((unsigned char*)(&color->data[0]),info->width,info->height,cim);
+
+
+    cout<<"hypo size before"<<HyposAll.getSize()<<endl;
     ///////////////////////////////////////////TRACKING///////////////////////////
-
     tracker.process_tracking_oneFrame(HyposAll, *det_comb, cnt, detected_bounding_boxes, cim, camera);
-    Vector<Hypo> hyposMDL = tracker.getHyposMDL();
+    //////////////////////////////////////////////////////////////////////////////
+    cout<<"hypo size after"<<HyposAll.getSize()<<endl;
 
+
+    Vector<Hypo> hyposMDL = tracker.getHyposMDL();
 
     MdlPeopleTrackerArray allHypoMsg;
     allHypoMsg.header = upper->header;
@@ -487,7 +490,6 @@ void callbackWithoutHOG(const ImageConstPtr &color,
     {
         MdlPeopleTracker oneHypoMsg;
         oneHypoMsg.header = upper->header;
-
 
         hyposMDL(i).getTrajPts(trajPts);
         for(int j = 0; j < trajPts.getSize(); j++)
@@ -508,10 +510,13 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         oneHypoMsg.score = hyposMDL(i).getScoreMDL();
         oneHypoMsg.speed = hyposMDL(i).getSpeed();
         hyposMDL(i).getDir(dir);
-        oneHypoMsg.index = hyposMDL(i).getUbdIndex();
-        ROS_FATAL_STREAM("*) hypo msg index set to: "<<oneHypoMsg.index);
-        oneHypoMsg.seq = hyposMDL(i).getUbdHeaderSeq();
-        ROS_FATAL_STREAM("*) hypo msg seq.nr set to: "<<oneHypoMsg.seq);
+
+
+        for(int j=0; j< hyposMDL(i).getUbdHeaderSeq().getSize(); j++){
+        	oneHypoMsg.index.push_back(hyposMDL(i).getUbdIndex()(j));
+        	oneHypoMsg.seq.push_back(hyposMDL(i).getUbdHeaderSeq()(j));
+        }
+
 
         oneHypoMsg.dir.push_back(dir(0));
         oneHypoMsg.dir.push_back(dir(1));
@@ -676,7 +681,7 @@ void connectCallback(message_filters::Subscriber<CameraInfo> &sub_cam,
                      message_filters::Subscriber<UpperBodyDetector> &sub_ubd,
                      message_filters::Subscriber<VisualOdometry> &sub_vo,
                      image_transport::SubscriberFilter &sub_col,
-                     image_transport::ImageTransport &it){
+                     image_transport::ImageTransport &it) {
     if(!pub_message.getNumSubscribers() && !pub_image.getNumSubscribers() && !pub_markers.getNumSubscribers() && !pub_pose.getNumSubscribers()) {
         ROS_DEBUG("Tracker: No subscribers. Unsubscribing.");
         sub_cam.unsubscribe();

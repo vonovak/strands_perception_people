@@ -497,7 +497,7 @@ void Detections::addHOGdetOneFrame(Vector<Vector <double> >& det, int frame, CIm
 
             computeColorHist(colhist, v_bbox, Globals::binSize, imageLeft);
 
-            detC(frame).pushBack(detContent); //HERE
+            detC(frame).pushBack(detContent); //HERE is the push
 
 
             colHists(frame).pushBack(colhist);

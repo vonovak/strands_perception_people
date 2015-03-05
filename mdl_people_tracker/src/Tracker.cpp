@@ -332,6 +332,7 @@ void Tracker::process_tracking_oneFrame(Vector<Hypo>& HyposAll, Detections& allD
 
     //*****************************************************************************************************
     HyposMDL.clearContent();
+
     process_frame( allDet , cam, frame, HyposAll);
 
 
@@ -826,8 +827,8 @@ void getCurrentSmoothDirection(Matrix<double> &pts, int smoothing_window, double
 
 }
 
-void Tracker::extend_trajectories(Vector< Hypo >& vHypos,  Detections& det, int t, int /*LTPmin*/,
-                                  double normfct, Vector< Hypo >& HypoExtended, Vector<int>& extendUsedDet/*,
+void Tracker::extend_trajectories(Vector<Hypo>& allHypos,  Detections& det, int t, int /*LTPmin*/,
+                                  double normfct, Vector<Hypo>& HypoExtended, Vector<int>& extendUsedDet/*,
                                   Camera &*/ /*cam*/)
 {
 
@@ -849,7 +850,6 @@ void Tracker::extend_trajectories(Vector< Hypo >& vHypos,  Detections& det, int 
     Matrix<double> Rot4D;
 
 
-    int numberHypos = vHypos.getSize();
     Hypo* auxHypo;
     Vector< Hypo > newHypos;
 
@@ -888,10 +888,11 @@ void Tracker::extend_trajectories(Vector< Hypo >& vHypos,  Detections& det, int 
     Vector<Volume<double> > colHistsOld;
 
 
-    for (int i = 0; i < numberHypos; i++)
+    int allhyposSize = allHypos.getSize();
+    for (int i = 0; i < allhyposSize; i++)
     {
 
-        auxHypo = &(vHypos(i));
+        auxHypo = &(allHypos(i));
 
         //**********************************************************
         // if a hypothesis was useless for too long, abandon it
@@ -1112,11 +1113,14 @@ void Tracker::extend_trajectories(Vector< Hypo >& vHypos,  Detections& det, int 
         newHypo.setStateCovMats(stateCovMatsOld);
         newHypo.setColHists(colHistsOld);
 
-        newHypo.setUbdHeaderSeq(det.getHeaderSeq(t,i));
-        newHypo.setUbdIndex(det.getIndex(t, i));
+        newHypo.setUbdHeaderSeq(auxHypo->getUbdHeaderSeq());
+        newHypo.setUbdIndex(auxHypo->getUbdIndex());
 
-        ROS_FATAL_STREAM("3.0) hypo seq nr set to: "<<newHypo.getUbdHeaderSeq());
-        ROS_FATAL_STREAM("3.0) hypo index set to: "<<newHypo.getUbdIndex());
+        newHypo.pushUbdSeqNr(det.getSeqNr(t,i));
+        newHypo.pushUbdIndex(det.getIndex(t, i));
+
+        //ROS_FATAL_STREAM("3.0) hypo seq nr set to: "<<newHypo.getUbdHeaderSeq());
+        //ROS_FATAL_STREAM("3.0) hypo index set to: "<<newHypo.getUbdIndex());
 
         if (newHypo.getCategory() != -1)
         {
@@ -1134,7 +1138,7 @@ void Tracker::extend_trajectories(Vector< Hypo >& vHypos,  Detections& det, int 
     }
 }
 
-void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hypo >& hypos,  double normfct, Vector<int>& extendUsedDet)
+void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hypo >& hyposNew,  double normfct, Vector<int>& extendUsedDet)
 {
     Vector<double> xInit;
     Matrix<double> PInit;
@@ -1164,7 +1168,7 @@ void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hy
 
     double r = M_PI; // Assume as Prior that the persons are front orientated.
 
-    hypos.clearContent();
+    hyposNew.clearContent();
 
 //    Vector<double> bbox;
 
@@ -1217,10 +1221,10 @@ void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hy
         hypo.setStateCovMats(stateCovMats);
         hypo.setColHists(colHists);
 
-        hypo.setUbdHeaderSeq(det.getHeaderSeq(endFrame,j));
-        hypo.setUbdIndex(det.getIndex(endFrame, j));
-        ROS_FATAL_STREAM("3) hypo seq nr set to: "<<hypo.getUbdHeaderSeq());
-        ROS_FATAL_STREAM("3) hypo index set to: "<<hypo.getUbdIndex());
+        hypo.pushUbdSeqNr(det.getSeqNr(endFrame,j));
+        hypo.pushUbdIndex(det.getIndex(endFrame, j));
+        //ROS_FATAL_STREAM("3) hypo seq nr set to: "<<hypo.getUbdHeaderSeq());
+        //ROS_FATAL_STREAM("3) hypo index set to: "<<hypo.getUbdIndex());
 
         compute_hypo_entries(mAllXnewDown, vRDown, vVDown, vvIdxDown, det, hypo, normfct, endFrame);
 
@@ -1229,7 +1233,7 @@ void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hy
         if (hypo.getCategory() != -1)
         {
             hypo.setLastSelected(endFrame);
-            hypos.pushBack(hypo);
+            hyposNew.pushBack(hypo);
         }
         vvIdxDown.clearContent();
     }
@@ -1680,7 +1684,7 @@ void Tracker::compute_hypo_entries(Matrix<double>& allX,  Vector<double>& R, Vec
                             copyV *= (i - endFrame);
 
                             vXj = x2;
-                            vXj +=copyV;
+                            vXj += copyV;
 
                             TrajRect.pushBack(mRj);
                             TrajPts.pushBack(vXj);

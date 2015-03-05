@@ -147,23 +147,50 @@ public:
     void getStateCovMats(Vector<Matrix<double> >& covMats);
     void setStateCovMats(Vector<Matrix<double> >& covMats);
 
-    uint32_t getUbdHeaderSeq(){
-    	return ubd_header_seq;
-        //return 1111;
-    }
-    void setUbdHeaderSeq(uint32_t seq){
+//    Vector<uint32_t> getUbdHeaderSeq(){
+//    	return ubd_header_seq;
+//    }
+//
+//    Vector<int> getUbdIndex(){
+//        return ubd_index;
+//    }
+
+    void pushUbdSeqNr(uint32_t seq){
     	ROS_FATAL_STREAM("2) setting hypo seq.nr: "<<seq);
-    	ubd_header_seq=seq;
+    	ubd_header_seq.pushBack(seq);
     }
 
-    int getUbdIndex(){
-        return ubd_index;
-        //return 2222;
-    }
-    void setUbdIndex(int index){
+    void pushUbdIndex(int index){
     	ROS_FATAL_STREAM("2) setting hypo index: "<<index);
-    	ubd_index=index;
+    	ubd_index.pushBack(index);
     }
+
+	void setUbdHeaderSeq(const Vector<uint32_t>& ubdHeaderSeq) {
+		ubd_header_seq = ubdHeaderSeq;
+	}
+
+	void setUbdIndex(const Vector<int>& ubdIndex) {
+		ubd_index = ubdIndex;
+	}
+
+	const Vector<uint32_t>& getUbdHeaderSeq() const {
+		return ubd_header_seq;
+	}
+
+	const Vector<int>& getUbdIndex() const {
+		return ubd_index;
+	}
+
+//    static void printHypos(Vector<Hypo>& hyposMDL){
+//    	int s=hyposMDL.getSize();
+//    	cout<<"size: "<<s<<endl;
+//    	for(int i=0;i<s;i++) {
+//    		cout<<"getHypoID:"<<hyposMDL(i).getHypoID()<<endl;
+//    		cout<<"header seq:"<<hyposMDL(i).getUbdHeaderSeq()<<endl;
+//    		cout<<"getUbdIndex:"<<hyposMDL(i).getUbdIndex()<<endl;
+//    	}
+//
+//    }
 
 //    void setWasApproved(bool v);
 //    bool getWasApproved();
@@ -235,8 +262,10 @@ protected:
     bool b_terminationFlag;
     int n_lastSelected;
 
-    uint32_t ubd_header_seq;
-    int ubd_index;
+    Vector<uint32_t> ubd_header_seq;
+    Vector<int> ubd_index;
+//    uint32_t ubd_header_seq;
+//    int ubd_index;
 
 //    bool was_not_approved;
 

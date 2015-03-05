@@ -22,10 +22,10 @@ find_package(Boost REQUIRED COMPONENTS thread)
 find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 include(${QT_USE_FILE})
 
-set(CMAKE_BUILD_TYPE Release)
+#set(CMAKE_BUILD_TYPE Release)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-O3")        ## Optimize
+    #set(CMAKE_CXX_FLAGS "-O3")        ## Optimize
 endif()
 
 #######################################

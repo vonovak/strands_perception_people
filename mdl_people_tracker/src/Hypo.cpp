@@ -13,6 +13,9 @@ Hypo& Hypo::operator=(const Hypo &hypo)
     if (this == &hypo)
         return *this;
 
+    ubd_header_seq=hypo.ubd_header_seq;
+    ubd_index=hypo.ubd_index;
+
 //    m_mP4D = hypo.m_mP4D;
     m_vvIdxC = hypo.m_vvIdxC;
     m_nCateg = hypo.m_nCateg;
@@ -60,10 +63,14 @@ Hypo& Hypo::operator=(const Hypo &hypo)
 
 Hypo::Hypo()
 {
+	ubd_header_seq=-1;
+	ubd_index=-1;
+
     b_terminationFlag = false;
     m_bMoving = false;
     n_ParentID = -1;
     n_lastSelected = 0;
+
 
 //    was_not_approved = false;
 //    exitIm = false;
@@ -71,6 +78,9 @@ Hypo::Hypo()
 
 Hypo::Hypo(const Hypo& hypo)
 {
+
+	ubd_header_seq=hypo.ubd_header_seq;
+	ubd_index=hypo.ubd_index;
 //    m_mP4D = hypo.m_mP4D;
     m_vvIdxC = hypo.m_vvIdxC;
     m_nCateg = hypo.m_nCateg;

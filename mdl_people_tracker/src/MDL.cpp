@@ -64,6 +64,8 @@ double MDL::solve_mdl_greedy(Matrix<double>& Q, Vector<double>& m, Vector < Hypo
             break;
         }
     }
+    //Hypo::printHypos(HypoAll);
+    //Hypo::printHypos(HyposMDL);
 
     return bestScore;
 }
