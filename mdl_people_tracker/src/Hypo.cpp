@@ -63,8 +63,7 @@ Hypo& Hypo::operator=(const Hypo &hypo)
 
 Hypo::Hypo()
 {
-	ubd_header_seq=-1;
-	ubd_index=-1;
+
 
     b_terminationFlag = false;
     m_bMoving = false;

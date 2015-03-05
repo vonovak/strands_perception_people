@@ -473,11 +473,11 @@ void callbackWithoutHOG(const ImageConstPtr &color,
     get_image((unsigned char*)(&color->data[0]),info->width,info->height,cim);
 
 
-    cout<<"hypo size before"<<HyposAll.getSize()<<endl;
+    //cout<<"hyposAll size before"<<HyposAll.getSize()<<endl;
     ///////////////////////////////////////////TRACKING///////////////////////////
     tracker.process_tracking_oneFrame(HyposAll, *det_comb, cnt, detected_bounding_boxes, cim, camera);
     //////////////////////////////////////////////////////////////////////////////
-    cout<<"hypo size after"<<HyposAll.getSize()<<endl;
+    //cout<<"hyposAll size after"<<HyposAll.getSize()<<endl;
 
 
     Vector<Hypo> hyposMDL = tracker.getHyposMDL();
@@ -512,9 +512,9 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         hyposMDL(i).getDir(dir);
 
 
-        for(int j=0; j< hyposMDL(i).getUbdHeaderSeq().getSize(); j++){
-        	oneHypoMsg.index.push_back(hyposMDL(i).getUbdIndex()(j));
-        	oneHypoMsg.seq.push_back(hyposMDL(i).getUbdHeaderSeq()(j));
+        for(int j=0; j< hyposMDL(i).getUbdHeaderSeq().size(); j++){
+        	oneHypoMsg.index.push_back(hyposMDL(i).getUbdIndex().at(j));
+        	oneHypoMsg.seq.push_back(hyposMDL(i).getUbdHeaderSeq().at(j));
         }
 
 

@@ -333,7 +333,8 @@ void Tracker::process_tracking_oneFrame(Vector<Hypo>& HyposAll, Detections& allD
     //*****************************************************************************************************
     HyposMDL.clearContent();
 
-    process_frame( allDet , cam, frame, HyposAll);
+
+    process_frame(allDet , cam, frame, HyposAll);
 
 
     //***************************************************************************************
@@ -352,6 +353,7 @@ void Tracker::process_tracking_oneFrame(Vector<Hypo>& HyposAll, Detections& allD
 
 //    Vector<Vector<double> > hyposToWrite(HyposMDL.getSize());
 
+    //cout<<"hyposmdl size "<<HyposMDL.getSize()<<endl;
 
     if(Globals::render_bbox3D)
     {
@@ -470,7 +472,11 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
 
     Vector<int> extendUsedDet;
 
+    if(HyposAll.getSize() > 0){
+    	cout<<"num of hypos: "<<HyposAll.getSize()<<endl;
+    }
     extend_trajectories(HyposAll,  det, LTPmax, LTPmin, normfct, HypoExtended, extendUsedDet/*, cam*/);
+
 //    if(Globals::verbose){
 //        cout << "\33[36;40;1m" <<" Extended " << HypoExtended.getSize()
 //             << " trajectories" << "\33[0m" << endl;
@@ -513,11 +519,13 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
 
     HyposAll = temp;
     
+
     //******************************************************************
     // Build the MDL Matrix
     //******************************************************************
 
     mdl.build_mdl_matrix(Q, HyposAll, LTPmax, normfct);
+
 
     //******************************************************************
     //  Solve MDL Greedy
@@ -526,6 +534,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
     //    mdl.solve_mdl_exactly(Q, m, HyposMDL, HypoIdx, HyposAll);
 
     mdl.solve_mdl_greedy(Q, m, HyposMDL, HypoIdx, HyposAll);
+
     //******************************************************************
     //  Fix IDs
     //******************************************************************
@@ -622,6 +631,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
         }
     }
 
+
     //******************************************************************
     // Print HypoMDL results
     //******************************************************************
@@ -671,7 +681,6 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
     }
 
     HyposAll = temp;
-
 }
 
 void Tracker::prepare_hypos(Vector<Hypo>& vHypos)
@@ -1113,14 +1122,14 @@ void Tracker::extend_trajectories(Vector<Hypo>& allHypos,  Detections& det, int 
         newHypo.setStateCovMats(stateCovMatsOld);
         newHypo.setColHists(colHistsOld);
 
-        newHypo.setUbdHeaderSeq(auxHypo->getUbdHeaderSeq());
-        newHypo.setUbdIndex(auxHypo->getUbdIndex());
+        for(int j=0; j<auxHypo->getUbdSeqNr().size();j++){
+        	newHypo.pushUbdIndex(auxHypo->getUbdIndex().at(j));
+        	newHypo.pushUbdSeqNr(auxHypo->getUbdSeqNr().at(j));
+        }
 
         newHypo.pushUbdSeqNr(det.getSeqNr(t,i));
         newHypo.pushUbdIndex(det.getIndex(t, i));
 
-        //ROS_FATAL_STREAM("3.0) hypo seq nr set to: "<<newHypo.getUbdHeaderSeq());
-        //ROS_FATAL_STREAM("3.0) hypo index set to: "<<newHypo.getUbdIndex());
 
         if (newHypo.getCategory() != -1)
         {
