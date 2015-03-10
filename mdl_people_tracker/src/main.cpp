@@ -467,17 +467,17 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         single_detection(6) = upper->width[i];
         single_detection(7) = upper->height[i] * 3;
         single_detection(8) = upper->median_depth[i];
-        single_detection(9) = (double) upper->header.seq;
+        single_detection(9) = (double) upper->header.seq; // saving the seq. nr.
         detected_bounding_boxes.pushBack(single_detection);
     }
     get_image((unsigned char*)(&color->data[0]),info->width,info->height,cim);
 
 
-    //cout<<"hyposAll size before"<<HyposAll.getSize()<<endl;
-    ///////////////////////////////////////////TRACKING///////////////////////////
+
+    /////////////////////////////////// TRACKING METHOD //////////////////////////
     tracker.process_tracking_oneFrame(HyposAll, *det_comb, cnt, detected_bounding_boxes, cim, camera);
     //////////////////////////////////////////////////////////////////////////////
-    //cout<<"hyposAll size after"<<HyposAll.getSize()<<endl;
+
 
 
     Vector<Hypo> hyposMDL = tracker.getHyposMDL();

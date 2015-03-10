@@ -56,26 +56,10 @@ public:
     double getHeight( int frame,  int detec);
     //    void getDetection(int frame, int detec, Vector<double>& det);
     int getCategory(int frame, int detec);
-    uint32_t getSeqNr(int frame, int detec){
-    	//cout<<"trying to access frame: "<<frame<<" and detection: "<<detec<<endl;
+    uint32_t getSeqNr(int frame, int detec);
 
-    	Vector<Vector<double> > v=detC(frame);
-    	int vs=v.getSize();
-    	if(detec >= vs){
-    		return 0;
-    	}
-    	return static_cast<unsigned int>(detC(frame)(detec)(24));
-    }
+    int getIndex(int frame, int detec);
 
-    int getIndex(int frame, int detec){
-    	Vector<Vector<double> > v=detC(frame);
-    	int vs=v.getSize();
-    	if(detec >= vs){
-    		return -1;
-    	}
-
-    	return static_cast<int>(detC(frame)(detec)(1));
-    }
 //    int getDetNumber(int frame, int detec);
 //    Vector<Vector<double> > get3Dpoints(int frame, int detec);
 //    Vector<Vector<int> > getOccCells(int frame, int detec);

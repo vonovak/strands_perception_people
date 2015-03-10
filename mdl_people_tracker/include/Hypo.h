@@ -147,32 +147,15 @@ public:
     void getStateCovMats(Vector<Matrix<double> >& covMats);
     void setStateCovMats(Vector<Matrix<double> >& covMats);
 
-    void pushUbdSeqNr(uint32_t seq){
-    	ubd_header_seq.push_back(seq);
-    }
 
-    void pushUbdIndex(int index){
-    	ubd_index.push_back(index);
-    }
+    void pushUbdSeqNr(uint32_t seq);
 
-	const std::vector<uint32_t>& getUbdSeqNr() const {
-		return ubd_header_seq;
-	}
+    void pushUbdIndex(int index);
 
-	const std::vector<int>& getUbdIndex() const {
-		return ubd_index;
-	}
+	const std::vector<int>& getUbdIndex();
 
-//    static void printHypos(Vector<Hypo>& hyposMDL){
-//    	int s=hyposMDL.getSize();
-//    	cout<<"size: "<<s<<endl;
-//    	for(int i=0;i<s;i++) {
-//    		cout<<"getHypoID:"<<hyposMDL(i).getHypoID()<<endl;
-//    		cout<<"header seq:"<<hyposMDL(i).getUbdHeaderSeq()<<endl;
-//    		cout<<"getUbdIndex:"<<hyposMDL(i).getUbdIndex()<<endl;
-//    	}
-//
-//    }
+	const std::vector<uint32_t>& getUbdSeqNr();
+
 
 //    void setWasApproved(bool v);
 //    bool getWasApproved();
@@ -244,10 +227,13 @@ protected:
     bool b_terminationFlag;
     int n_lastSelected;
 
+
+    //UBD seq. numbers of messages that were used to make this hypothesis
     std::vector<uint32_t> ubd_header_seq;
+    //Indices into the arrays in UBD messages. There are stored (among other) coordinates of the people (within camera image)
+    //that were used for the hypothesis.
     std::vector<int> ubd_index;
-//    uint32_t ubd_header_seq;
-//    int ubd_index;
+
 
 //    bool was_not_approved;
 

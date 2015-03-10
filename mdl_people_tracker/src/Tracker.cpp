@@ -472,6 +472,7 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
 
     Vector<int> extendUsedDet;
 
+    // this method extends existing hypothesis'
     extend_trajectories(HyposAll,  det, LTPmax, LTPmin, normfct, HypoExtended, extendUsedDet/*, cam*/);
 
 //    if(Globals::verbose){
@@ -1119,13 +1120,17 @@ void Tracker::extend_trajectories(Vector<Hypo>& allHypos,  Detections& det, int 
         newHypo.setStateCovMats(stateCovMatsOld);
         newHypo.setColHists(colHistsOld);
 
+
+        ///////////// copying the old stuff into the new hypo
         for(int j=0; j<auxHypo->getUbdSeqNr().size();j++){
         	newHypo.pushUbdIndex(auxHypo->getUbdIndex().at(j));
         	newHypo.pushUbdSeqNr(auxHypo->getUbdSeqNr().at(j));
         }
 
+        // and extending it with new stuff
         newHypo.pushUbdSeqNr(det.getSeqNr(t, i));
         newHypo.pushUbdIndex(det.getIndex(t, i));
+        /////////////////////////////////////////
 
 
         if (newHypo.getCategory() != -1)

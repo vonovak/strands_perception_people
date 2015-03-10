@@ -164,6 +164,27 @@ Hypo::~Hypo()
 //    target = (m_mP4D);
 //}
 
+
+
+/////////////// methods to deal with UBD seq. numbers and indices
+void Hypo::pushUbdSeqNr(uint32_t seq){
+	ubd_header_seq.push_back(seq);
+}
+
+void Hypo::pushUbdIndex(int index){
+	ubd_index.push_back(index);
+}
+
+const std::vector<uint32_t>& Hypo::getUbdSeqNr() {
+	return ubd_header_seq;
+}
+
+const std::vector<int>& Hypo::getUbdIndex() {
+	return ubd_index;
+}
+////////////////////////////////////////////////////////////////////
+
+
 // ***********************************************************************
 //   Idx
 // ***********************************************************************

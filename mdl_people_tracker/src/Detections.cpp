@@ -92,6 +92,31 @@ Detections::Detections(int x, const int flag)
 
 // ++++++++++++++++++++++++ Implementation ++++++++++++++++++++++++++++++++++++++
 
+/*
+ * Get sequence number from a detection. If the particular detection message was empty, return 0
+ */
+uint32_t Detections::getSeqNr(int frame, int detec){
+    	//cout<<"trying to access frame: "<<frame<<" and detection: "<<detec<<endl;
+
+    	Vector<Vector<double> > v=detC(frame);
+    	int vs = v.getSize();
+
+    	if(detec >= vs || frame >= detC.getSize()){
+    		return 0;
+    	}
+    	return static_cast<unsigned int>(detC(frame)(detec)(24));
+    }
+
+/*
+ * Get index from a detection. If the particular detection message was empty, return -1
+ */
+int Detections::getIndex(int frame, int detec){
+	if(detec >= detC(frame).getSize() || frame >= detC.getSize()){
+		return -1;
+	}
+
+	return static_cast<int>(detC(frame)(detec)(1));
+}
 
 int Detections::numberDetectionsAtFrame(int frame)
 {
@@ -167,14 +192,12 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
 
     detContent.setSize(25, 0.0);
 
-    // i is the index I want to save in the message
-    // det is a vector, that contains the detection messages. Detection message contains the seq # that I want, at index 9
 
     detContent(score) = det(i)(score_hog);
     detContent(scale) = det(i)(scale_hog) ;
     detContent(img_num) = det(i)(img_num_hog);
     detContent(hypo_num) = det(i)(hypo_num_hog);
-    detContent(bbox) = floor(det(i)(bbox_hog) );
+    detContent(bbox) = floor(det(i)(bbox_hog));
     detContent(bbox + 1) = floor(det(i)(bbox_hog + 1));
     detContent(bbox + 2) = floor(det(i)(bbox_hog + 2));
     detContent(bbox + 3) = floor(det(i)(bbox_hog + 3));
@@ -184,6 +207,9 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
     } else {
         detContent(22) = 1;
     }
+
+    // det is a vector, that contains the detection messages. Detection message contains the seq # that I want, at index 9
+    // here, I'm saving the number
     detContent(24) = det(i)(9);
 
 
@@ -197,7 +223,7 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
     Vector<double> planeInCam = projectPlaneToCam(gp, cam);
     Camera camI(camInt, camRot, camPos, planeInCam);
 
-//    compute3DPosition(detContent, camI);
+    // compute3DPosition(detContent, camI);
 
     Vector<double> posInCamCord(3,1.0);
 
@@ -212,13 +238,13 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
     v_bbox(2) = (detContent(bbox+2));
     v_bbox(3) = (detContent(bbox+3)/3); // Use only upper body for histogram calculation
 
-//            X[i] = z*(((i%width)-c20)/c00);
-//            Y[i] = z*(((i/width)-c21)/c11);
+    // X[i] = z*(((i%width)-c20)/c00);
+    // Y[i] = z*(((i/width)-c21)/c11);
 
 
 
-            posInCamCord(0) = (det(i)(distance_z)*(v_bbox(0)+v_bbox(2)/2.0 - c20) / c00);
-            posInCamCord(1) = (det(i)(distance_z)*(v_bbox(1) - c21) / c11);
+    posInCamCord(0) = (det(i)(distance_z)*(v_bbox(0)+v_bbox(2)/2.0 - c20) / c00);
+    posInCamCord(1) = (det(i)(distance_z)*(v_bbox(1) - c21) / c11);
 
     posInCamCord(2) = det(i)(distance_z);//+0.35; // Move from hull of cylinder to the center of mass of a pedestrian
 
@@ -466,7 +492,7 @@ bool Detections::improvingBBoxAlignment_libelas(Vector<double>& vbbox, double va
 void Detections::addHOGdetOneFrame(Vector<Vector <double> >& det, int frame, CImg<unsigned char>& imageLeft, Camera cam/*, Matrix<double>& depthMap*/)
 {
 
-    // FIXME find a differnt approach for determing a 3D cov.
+    // FIXME find a different approach for determing a 3D cov.
 
     Matrix<double> covariance(3,3,0.0);
 
@@ -474,10 +500,9 @@ void Detections::addHOGdetOneFrame(Vector<Vector <double> >& det, int frame, CIm
     Vector<double> pos3d(3);
     Vector<double> v_bbox(4);
 
-
     Vector<double>detContent;
 
-    for ( int i = 0; i < det.getSize(); i++)
+    for (int i = 0; i < det.getSize(); i++)
     {
         if(prepareDet(detContent, det, i, true, cam, covariance))
         {
@@ -493,7 +518,7 @@ void Detections::addHOGdetOneFrame(Vector<Vector <double> >& det, int frame, CIm
             computeColorHist(colhist, v_bbox, Globals::binSize, imageLeft);
 
             //ROS_FATAL_STREAM("2) seq number of frame "<< frame <<" saved in detContent:"<<detContent(24));
-            detC(frame).pushBack(detContent); //HERE is the push. detC: Vector< Vector < Vector  <double> > > detC;
+            detC(frame).pushBack(detContent); //HERE is the push of the single detection into the vector of all detections.
 
 
             colHists(frame).pushBack(colhist);

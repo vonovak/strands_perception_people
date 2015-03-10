@@ -94,7 +94,7 @@
         <arg name="people_markers" value="$(arg people_markers)"/>
         <arg name="people_poses" value="$(arg people_poses)"/>
         <arg name="target_frame" value="$(arg tf_target_frame)"/>
-    </include>  
+    </include>
 
     <!-- People Tracker -->
     <include file="$(find bayes_people_tracker)/launch/people_tracker.launch">
