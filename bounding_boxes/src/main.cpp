@@ -100,7 +100,6 @@ void jsonStr(const char* const s, Value& v, Document::AllocatorType& a) {
 
 void saveJson(Document &d, string fname) {
 	StringBuffer sbuffer;
-
 	PrettyWriter<StringBuffer> writer(sbuffer); //change to instance of Writer to get smaller files (not very readable)
 
 	d.Accept(writer);
@@ -156,37 +155,41 @@ void saveOdomAndDetections(const Odometry::ConstPtr &odom, const upper_body_dete
 	pose2.AddMember("orientation", orient, a);
 	pose.AddMember("pose", pose2, a);
 
-	Value cov(kArrayType);
-	for (int i = 0; i < odom->pose.covariance.size(); i++)
-		cov.PushBack(odom->pose.covariance[i], a);
-
-	pose.AddMember("covariance", cov, a);
+//	Value cov(kArrayType);
+//	for (int i = 0; i < odom->pose.covariance.size(); i++)
+//		cov.PushBack(odom->pose.covariance[i], a);
+//
+//	pose.AddMember("covariance", cov, a);
 	d.AddMember("pose", pose, a);
 	//pose done
-
-	Value twist(kObjectType);
-	Value twist2(kObjectType);
-	Value linear(kObjectType);
-	linear.AddMember("x", odom->twist.twist.linear.x, a);
-	linear.AddMember("y", odom->twist.twist.linear.y, a);
-	linear.AddMember("z", odom->twist.twist.linear.z, a);
-	twist2.AddMember("linear", linear, a);
-
-	Value angular(kObjectType);
-	angular.AddMember("x", odom->twist.twist.angular.x, a);
-	angular.AddMember("y", odom->twist.twist.angular.y, a);
-	angular.AddMember("z", odom->twist.twist.angular.z, a);
-	twist2.AddMember("angular", angular, a);
-	twist.AddMember("twist", twist2, a);
-
-	Value cov2(kArrayType);
-	for (int i = 0; i < odom->twist.covariance.size(); i++)
-		cov2.PushBack(odom->twist.covariance[i], a);
-
-	twist.AddMember("covariance", cov2, a);
-	d.AddMember("twist", twist, a);
+//
+//	Value twist(kObjectType);
+//	Value twist2(kObjectType);
+//	Value linear(kObjectType);
+//	linear.AddMember("x", odom->twist.twist.linear.x, a);
+//	linear.AddMember("y", odom->twist.twist.linear.y, a);
+//	linear.AddMember("z", odom->twist.twist.linear.z, a);
+//	twist2.AddMember("linear", linear, a);
+//
+//	Value angular(kObjectType);
+//	angular.AddMember("x", odom->twist.twist.angular.x, a);
+//	angular.AddMember("y", odom->twist.twist.angular.y, a);
+//	angular.AddMember("z", odom->twist.twist.angular.z, a);
+//	twist2.AddMember("angular", angular, a);
+//	twist.AddMember("twist", twist2, a);
+//
+//	Value cov2(kArrayType);
+//	for (int i = 0; i < odom->twist.covariance.size(); i++)
+//		cov2.PushBack(odom->twist.covariance[i], a);
+//
+//	twist.AddMember("covariance", cov2, a);
+//	d.AddMember("twist", twist, a);
 	//twist done
 	//entire odom msg done
+
+	Value ubdHeader(kObjectType);
+	ubdHeader.AddMember("seq", ubd->header.seq, a);
+	d.AddMember("header", ubdHeader, a);
 
 	Value detectionsx(kArrayType);
 	for (int i = 0; i < ubd->pos_x.size(); i++)
@@ -212,7 +215,6 @@ void saveOdomAndDetections(const Odometry::ConstPtr &odom, const upper_body_dete
 	//ubd message done
 
 	saveJson(d, fname);
-
 }
 
 void callback(const ImageConstPtr &depth, const ImageConstPtr &color,
@@ -226,7 +228,7 @@ void callback(const ImageConstPtr &depth, const ImageConstPtr &color,
 	string fname = stream.str();
 
 	saveImg(color, true, fname);
-	saveImg(depth, false, fname);
+	//saveImg(depth, false, fname);
 	saveOdomAndDetections(odom, ubd, fname + "_odom_detect");
 }
 
@@ -315,7 +317,6 @@ void camInfo2Json(Document &d, sensor_msgs::CameraInfoConstPtr &caminfo, string 
 }
 
 void saveCamInfo(sensor_msgs::CameraInfoConstPtr rgbInfo, sensor_msgs::CameraInfoConstPtr depthInfo) {
-
 	Document d;
 	d.SetObject();
 
@@ -325,7 +326,7 @@ void saveCamInfo(sensor_msgs::CameraInfoConstPtr rgbInfo, sensor_msgs::CameraInf
 }
 
 int main(int argc, char **argv) {
-	// Set up ROS.
+	// Set up ROS
 	ros::init(argc, argv, node_name);
 	ros::NodeHandle n;
 

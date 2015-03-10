@@ -1,6 +1,6 @@
 <launch>
     <arg name="load_params_from_file" default="true" />        
-    <arg name="queue_size" default="5" />
+    <arg name="queue_size" default="25" />
     <arg name="camera_namespace" default="/head_xtion" />
     <arg name="upper_body_detector" default="/upper_body_detector/detections" />
     <arg name="odom" default="/odom" />
@@ -8,14 +8,13 @@
     <arg name="camera_info_depth" default="/depth_registered/camera_info" />
     <arg name="camera_info_rgb" default="/rgb/camera_info" />
     <arg name="depth_image" default="/depth_registered/image_rect" />
-    <arg name="pretty_json" default="false" />
 
     <arg name="machine" default="localhost" />
     <arg name="user" default="" />
 
-    <machine name="$(arg machine)" address="$(arg machine)" env-loader="$(optenv ROS_ENV_LOADER )" user="$(arg user)" default="true"/>
+    <machine name="$(arg machine)" address="$(arg machine)" env-loader="$(optenv ROS_ENV_LOADER)" user="$(arg user)" default="true"/>
     
-    <node pkg="bounding_boxes" type="bounding_boxes_node" name="bounding_boxes_node" output="log">
+    <node pkg="bounding_boxes" type="bounding_boxes_node" name="bounding_boxes_node" output="screen">
         <param name="queue_size" value="$(arg queue_size)" type="int"/>
         <param name="camera_namespace" value="$(arg camera_namespace)" type="string"/>
         <param name="depth_image" value="$(arg depth_image)" type="string"/>
@@ -24,7 +23,6 @@
         <param name="camera_info_rgb" value="$(arg camera_info_rgb)" type="string"/>
         <param name="upper_body_detector" value="$(arg upper_body_detector)" type="string"/>
         <param name="odom" value="$(arg odom)" type="string"/>
-        <param name="pretty_json" value="$(arg pretty_json)" type="string"/>
     </node>
 
 </launch> 
