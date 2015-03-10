@@ -472,9 +472,6 @@ void Tracker::process_frame(Detections& det, Camera &cam, int frameNr,  Vector< 
 
     Vector<int> extendUsedDet;
 
-    if(HyposAll.getSize() > 0){
-    	cout<<"num of hypos: "<<HyposAll.getSize()<<endl;
-    }
     extend_trajectories(HyposAll,  det, LTPmax, LTPmin, normfct, HypoExtended, extendUsedDet/*, cam*/);
 
 //    if(Globals::verbose){
@@ -1127,7 +1124,7 @@ void Tracker::extend_trajectories(Vector<Hypo>& allHypos,  Detections& det, int 
         	newHypo.pushUbdSeqNr(auxHypo->getUbdSeqNr().at(j));
         }
 
-        newHypo.pushUbdSeqNr(det.getSeqNr(t,i));
+        newHypo.pushUbdSeqNr(det.getSeqNr(t, i));
         newHypo.pushUbdIndex(det.getIndex(t, i));
 
 
@@ -1232,8 +1229,7 @@ void Tracker::make_new_hypos(int endFrame, int tmin, Detections& det, Vector< Hy
 
         hypo.pushUbdSeqNr(det.getSeqNr(endFrame,j));
         hypo.pushUbdIndex(det.getIndex(endFrame, j));
-        //ROS_FATAL_STREAM("3) hypo seq nr set to: "<<hypo.getUbdHeaderSeq());
-        //ROS_FATAL_STREAM("3) hypo index set to: "<<hypo.getUbdIndex());
+
 
         compute_hypo_entries(mAllXnewDown, vRDown, vVDown, vvIdxDown, det, hypo, normfct, endFrame);
 

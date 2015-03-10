@@ -175,18 +175,17 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
     detContent(img_num) = det(i)(img_num_hog);
     detContent(hypo_num) = det(i)(hypo_num_hog);
     detContent(bbox) = floor(det(i)(bbox_hog) );
-    detContent(bbox + 1) = floor(det(i)(bbox_hog + 1) );
-    detContent(bbox + 2) = floor(det(i)(bbox_hog + 2) );
+    detContent(bbox + 1) = floor(det(i)(bbox_hog + 1));
+    detContent(bbox + 2) = floor(det(i)(bbox_hog + 2));
     detContent(bbox + 3) = floor(det(i)(bbox_hog + 3));
     if(leftDet)
     {
         detContent(22) = 0;
-    }else
-    {
+    } else {
         detContent(22) = 1;
     }
     detContent(24) = det(i)(9);
-    ROS_FATAL_STREAM("2) seq number saved in detC:"<<detContent(24));
+
 
     Matrix<double> camRot = Eye<double>(3);
     Vector<double> camPos(3, 0.0);
@@ -231,10 +230,6 @@ int Detections::prepareDet(Vector<double> &detContent, Vector<Vector <double> >&
     detContent(height) = cp_posInCamCord.norm();
 
     posInCamCord.pushBack(1);
-
-
-
-
 
 
     if(posInCamCord(2) < 0)
@@ -497,7 +492,8 @@ void Detections::addHOGdetOneFrame(Vector<Vector <double> >& det, int frame, CIm
 
             computeColorHist(colhist, v_bbox, Globals::binSize, imageLeft);
 
-            detC(frame).pushBack(detContent); //HERE is the push
+            //ROS_FATAL_STREAM("2) seq number of frame "<< frame <<" saved in detContent:"<<detContent(24));
+            detC(frame).pushBack(detContent); //HERE is the push. detC: Vector< Vector < Vector  <double> > > detC;
 
 
             colHists(frame).pushBack(colhist);

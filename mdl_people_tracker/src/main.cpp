@@ -512,9 +512,9 @@ void callbackWithoutHOG(const ImageConstPtr &color,
         hyposMDL(i).getDir(dir);
 
 
-        for(int j=0; j< hyposMDL(i).getUbdHeaderSeq().size(); j++){
+        for(int j=0; j < hyposMDL(i).getUbdSeqNr().size(); j++){
         	oneHypoMsg.index.push_back(hyposMDL(i).getUbdIndex().at(j));
-        	oneHypoMsg.seq.push_back(hyposMDL(i).getUbdHeaderSeq().at(j));
+        	oneHypoMsg.seq.push_back(hyposMDL(i).getUbdSeqNr().at(j));
         }
 
 

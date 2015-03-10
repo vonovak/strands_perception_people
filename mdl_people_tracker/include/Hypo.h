@@ -148,12 +148,10 @@ public:
     void setStateCovMats(Vector<Matrix<double> >& covMats);
 
     void pushUbdSeqNr(uint32_t seq){
-    	ROS_FATAL_STREAM("2) setting hypo seq.nr: "<<seq);
     	ubd_header_seq.push_back(seq);
     }
 
     void pushUbdIndex(int index){
-    	ROS_FATAL_STREAM("2) setting hypo index: "<<index);
     	ubd_index.push_back(index);
     }
 
