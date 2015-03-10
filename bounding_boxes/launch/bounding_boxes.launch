@@ -8,7 +8,6 @@
     <arg name="camera_info_depth" default="/depth_registered/camera_info" />
     <arg name="camera_info_rgb" default="/rgb/camera_info" />
     <arg name="depth_image" default="/depth_registered/image_rect" />
-    <arg name="pretty_json" default="false" />
 
     <arg name="machine" default="localhost" />
     <arg name="user" default="" />
@@ -24,7 +23,6 @@
         <param name="camera_info_rgb" value="$(arg camera_info_rgb)" type="string"/>
         <param name="upper_body_detector" value="$(arg upper_body_detector)" type="string"/>
         <param name="odom" value="$(arg odom)" type="string"/>
-        <param name="pretty_json" value="$(arg pretty_json)" type="string"/>
     </node>
 
 </launch> 
